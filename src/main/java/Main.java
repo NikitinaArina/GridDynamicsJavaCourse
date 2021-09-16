@@ -1,3 +1,8 @@
+import entities.Course;
+import entities.Curriculum;
+import entities.Student;
+import report.Report;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
