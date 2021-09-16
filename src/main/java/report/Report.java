@@ -1,6 +1,7 @@
 package report;
 
 import entities.Student;
+import util.DateFormatter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,10 +10,9 @@ import static java.lang.Math.abs;
 
 public class Report {
     private static final LocalDateTime timeOfReportGeneration = LocalDateTime.now();
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy - EEEE (hh:mm)");
 
     public static void getReport(Student student, int parameter) {
-        System.out.println("Time of report generation: " + timeOfReportGeneration.format(dateTimeFormatter));
+        System.out.println("Time of report generation: " + timeOfReportGeneration.format(DateFormatter.dateTimeFormatter));
         if (parameter == 1) {
             fullReport(student);
         } else shortReport(student);

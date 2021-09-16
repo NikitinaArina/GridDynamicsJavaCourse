@@ -1,5 +1,7 @@
 package entities;
 
+import util.DateFormatter;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,8 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Student {
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy - EEEE");
-
     private String name;
 
     private Curriculum curriculum;
@@ -48,7 +48,7 @@ public class Student {
     }
 
     public String getStartDate() {
-        return startDate.format(dateTimeFormatter);
+        return startDate.format(DateFormatter.dateFormatter);
     }
 
     public void setStartDate(LocalDate startDate) {
@@ -80,7 +80,7 @@ public class Student {
     }
 
     public String getEndDate() {
-        return endDate.format(dateTimeFormatter);
+        return endDate.format(DateFormatter.dateFormatter);
     }
 
     public void setEndDate(LocalDateTime endDate) {
@@ -103,6 +103,7 @@ public class Student {
         int totalDuration = getTotalDurationOfCourses();
 
         LocalDateTime endDate = startDate.atStartOfDay();
+        endDate = endDate.withHour(workDayFrom);
         endDate = endDate.withMinute(0);
         endDate = endDate.withSecond(0);
 
@@ -116,11 +117,10 @@ public class Student {
             if (endDate.getHour() > workDayTo - 1) {
                 endDate = endDate.plusDays(1);
                 endDate = endDate.withHour(workDayFrom);
+            } else {
+                endDate = endDate.plusHours(1);
+                totalDuration--;
             }
-
-            endDate = endDate.plusHours(1);
-
-            totalDuration--;
         }
         return endDate;
     }
