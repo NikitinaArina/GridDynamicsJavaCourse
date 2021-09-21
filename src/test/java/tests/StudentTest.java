@@ -1,52 +1,47 @@
 package tests;
 
-import entities.Course;
-import entities.Curriculum;
-import entities.Student;
-import org.junit.Before;
+import models.Course;
+import models.Curriculum;
+import models.Student;
 import org.junit.Test;
-import util.DateFormatter;
-import validator.DateValidator;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import service.impl.StudentServiceImpl;
+import service.interfaces.StudentService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+@RunWith(Parameterized.class)
 public class StudentTest {
-    private static final int YEAR = 2021;
-    private static final int MONTH = 9;
-    private static final int END_DAY_OF_MONTH = 28;
-    private static final int START_DAY_OF_MONTH = 10;
-    private static final int HOUR = 14;
-    private static final int MINUTE = 0;
-    private static final int DURATION = 40;
-    private static final int SECOND_DURATION = 20;
+
+    @Parameterized.Parameters
+    public static Object[][] data() {
+        return new Object[][]{
+                {new Student("Ivan Petrov", Curriculum.JavaDeveloper,
+                        LocalDate.of(2021, 9, 10),
+                        List.of(new Course("Java for testing", 40),
+                                new Course("Spring for testing", 40),
+                                new Course("GIT", 20))),
+                        LocalDateTime.of(2021, 9, 28, 14, 0)}
+        };
+    }
 
     private Student student;
+    private final StudentService studentService = new StudentServiceImpl();
     private LocalDateTime endDate;
 
-    @Before
-    public void setUp() {
-        Course course = new Course("Java for testing", DURATION);
-        Course course1 = new Course("Spring for testing", DURATION);
-        Course course2 = new Course("GIT", SECOND_DURATION);
-        endDate = LocalDateTime.of(YEAR, MONTH, END_DAY_OF_MONTH, HOUR, MINUTE);
-        student = new Student("Ivan Petrov", Curriculum.JavaDeveloper, LocalDate.of(YEAR, MONTH, START_DAY_OF_MONTH), List.of(course, course1, course2));
+    public StudentTest(Student student, LocalDateTime endDate) {
+        this.student = student;
+        this.endDate = endDate;
     }
 
     @Test
     public void defineCorrectEndDate() {
-        LocalDateTime endOfCourses = student.getEndOfCourses();
-        assertEquals(endDate, endOfCourses);
-    }
-
-    @Test
-    public void dateValidatorWorkCorrect() {
-        DateValidator dateValidator = new DateValidator(DateFormatter.dateFormatter);
-        assertTrue(dateValidator.isValid(student.getEndDate()));
-        assertTrue(dateValidator.isValid(student.getStartDate()));
+        LocalDateTime endOfCourses = studentService.getEndOfCourses(student);
+        assertEquals("date of end training not correct", endDate, endOfCourses);
     }
 }

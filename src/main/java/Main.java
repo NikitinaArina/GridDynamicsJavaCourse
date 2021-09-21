@@ -1,25 +1,32 @@
-import entities.Course;
-import entities.Curriculum;
-import entities.Student;
-import report.Report;
+import models.Course;
+import models.Curriculum;
+import models.Student;
+import report.Reporter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalField;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.LongAccumulator;
-
-import static java.lang.Math.abs;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
+    public static List<Student> students = List.of(new Student("Ivan Ivanov", Curriculum.JavaDeveloper,
+                    LocalDate.of(2020, 6, 1),
+                    List.of(new Course("Java", 16), new Course("Spring", 16), new Course("JDBC", 24))),
+            new Student("Ivan Ivanov", Curriculum.AQA,
+                    LocalDate.of(2020, 6, 1),
+                    List.of(new Course("Test design", 10), new Course("Page Object", 16),
+                            new Course("Selenium", 16))));
     public static void main(String[] args) {
-        Course course = new Course("Java for testing", 24);
-        Course course1 = new Course("Spring for testing", 32);
-        Student student = new Student("Petr", Curriculum.JavaDeveloper, LocalDate.of(2021, 9, 8), new ArrayList<>(Arrays.asList(course, course1)));
-        Report.getReport(student, 1);
-        Report.getReport(student, 0);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Input date (yyyy-mm-dd)");
+        String date = scanner.nextLine();
+        System.out.println("Input time (hh:mm)");
+        String time = scanner.nextLine();
+        System.out.println("Input parameter for type of report (1 - full report, no parameter/0 - short)");
+        int parameter = scanner.nextInt();
+        scanner.close();
+        LocalDateTime dateTime = LocalDateTime.parse(date + "T" + time);
+        Reporter report = new Reporter(dateTime);
+        report.getReport(students, parameter);
     }
 }
