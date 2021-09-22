@@ -1,7 +1,8 @@
-package entities;
+package models;
 
 public enum Curriculum {
-    JavaDeveloper("Java Developer"), AQA("Automate Quality Assurance");
+    JavaDeveloper("Java Developer"),
+    AQA("Automate Quality Assurance");
 
     private String desc;
 

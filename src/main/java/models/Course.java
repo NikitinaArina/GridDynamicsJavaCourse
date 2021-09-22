@@ -1,5 +1,8 @@
-package entities;
+package models;
 
+import lombok.Data;
+
+@Data
 public class Course {
     private String name;
 
@@ -7,22 +10,6 @@ public class Course {
 
     public Course(String name, int duration) {
         this.name = name;
-        this.duration = duration;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
         this.duration = duration;
     }
 
